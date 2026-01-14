@@ -175,6 +175,7 @@ There are several predefined variables that can be referenced in the path part o
 | Variable | Description |
 |----------|-------------|
 | `TARGET_DIR` | The path to the target file's parent directory, relative to the project root. For example, if the target file is `lib/domain/user.dart`, the pattern `$TARGET_DIR/**` expands to `lib/domain/**` at evaluation time. An example of using this variable can be found in [Case study: Implementation detail encapsulation](README.md#implementation-detail-encapsulation). |
+| **Regex Named Groups** | When using regular expressions in `target` patterns, you can use named capture groups (e.g., `(?<feature>[^/]+)`) to extract parts of the file path. These captured values can then be referenced in `disallow` and `exclude_disallow` patterns using `$groupname` syntax. For example, if your target pattern is `lib/features/business/(?<feature>[^/]+)/**` and it matches `lib/features/business/wallet/domain/file.dart`, then `$feature` will be replaced with `wallet` in the disallow patterns. This provides a powerful way to create dynamic rules based on path structure. |
 
 </br>
 

@@ -163,15 +163,37 @@ lib/
     profile/
 ```
 
+**Using regex named capture groups:**
+
 ```import_rules.yaml
 rules:
-  - target: lib/features/**
-    disallow: lib/features/**
+  - target: lib/features/business/(?<feature>[^/]+)/**
+    disallow: lib/features/business/**
     exclude_disallow:
-      - $TARGET_DIR/** # Allow internal dependencies within the same feature.
+      - lib/features/business/$feature/**
       - lib/features/core/**
     reason: Features should be isolated from each other except the core module.
 ```
+
+The `(?<feature>[^/]+)` captures the feature name (e.g., "wallet", "profile"), and `$feature` references it in the exclude pattern. This single rule automatically handles all features without needing to list them individually.
+
+This works seamlessly with nested structures:
+
+```file tree
+lib/
+  features/
+    business/
+      wallet/
+        domain/
+        data/
+        presentation/
+      profile/
+        domain/
+        data/
+        presentation/
+```
+
+With regex named groups, files in `wallet/presentation/` can import from `wallet/domain/` (same feature), but cannot import from `profile/domain/` (different feature).
 
 ### Enforcing custom component usage
 
